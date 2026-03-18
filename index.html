@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Carpal Tunnel Release Outcomes in Nicotine-Dependent Patients</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <header>
+      <h1>Endoscopic vs Open Carpal Tunnel Release in Nicotine-Dependent Patients</h1>
+      <p class="subtitle">
+        Interactive visualization of 90-day perioperative outcomes from a
+        propensity score&ndash;matched analysis of 27,382 patients (TriNetX database).
+      </p>
+      <p class="citation">
+        Coombs J, Dussik CM, Phan A, Ferraro J, Wilbur D, Ketonis C. HAND. 2026. DOI: 10.1177/15589447251415393
+      </p>
+    </header>
+
+    <div class="dashboard">
+      <!-- Summary stats -->
+      <div class="summary-grid">
+        <div class="summary-stat">
+          <div class="value">27,382</div>
+          <div class="label">Total Patients</div>
+        </div>
+        <div class="summary-stat">
+          <div class="value">22,435</div>
+          <div class="label">Open CTR</div>
+        </div>
+        <div class="summary-stat">
+          <div class="value">4,947</div>
+          <div class="label">Endoscopic CTR</div>
+        </div>
+        <div class="summary-stat highlight">
+          <div class="value">4 of 10</div>
+          <div class="label">Significant Outcomes (Matched)</div>
+        </div>
+      </div>
+
+      <!-- Key findings -->
+      <div class="key-findings">
+        <h3>Key Findings (After Propensity Score Matching)</h3>
+        <ul>
+          <li>Open CTR had <strong>3.1&times;</strong> higher odds of hospital admission (95% CI: 1.6&ndash;5.9)</li>
+          <li>Open CTR had <strong>2.2&times;</strong> higher odds of superficial SSI (95% CI: 1.7&ndash;2.8)</li>
+          <li>Open CTR had <strong>2.2&times;</strong> higher odds of median nerve injury (95% CI: 1.0&ndash;4.6)</li>
+          <li>Open CTR had <strong>1.2&times;</strong> higher odds of ED visits (95% CI: 1.1&ndash;1.4)</li>
+        </ul>
+      </div>
+
+      <!-- Charts -->
+      <div class="card">
+        <p class="card-description">
+          Forest plot showing odds ratios for each 90-day complication after propensity score matching.
+          Diamond markers to the right of the dashed line (OR = 1) indicate higher risk with open CTR.
+          Red = statistically significant (P &lt; .05); gray = not significant.
+        </p>
+        <div id="forest-matched"></div>
+      </div>
+
+      <div class="card">
+        <p class="card-description">
+          Side-by-side complication rates after matching. Asterisks (*) mark outcomes with statistically significant differences.
+        </p>
+        <div id="bar-matched"></div>
+      </div>
+
+      <div class="card">
+        <p class="card-description">
+          How propensity score matching affected the odds ratios. Purple = unmatched (raw), green = matched.
+          Matching adjusts for demographic and comorbidity differences between groups.
+        </p>
+        <div id="match-comparison"></div>
+      </div>
+
+      <div class="card">
+        <p class="card-description">
+          Absolute risk difference (percentage points) and Number Needed to Treat (NNT) for matched cohorts.
+          NNT represents how many patients would need to receive ECTR instead of OCTR to prevent one additional complication.
+        </p>
+        <div id="risk-diff"></div>
+      </div>
+
+      <div class="card">
+        <p class="card-description">
+          Comorbidity prevalence in the matched cohorts. After matching, several comorbidities were actually
+          <em>more</em> prevalent in the ECTR group, suggesting the observed benefits of ECTR may be even more robust.
+        </p>
+        <div id="demographics"></div>
+      </div>
+
+      <div class="card">
+        <p class="card-description">
+          Complication rates before propensity score matching, showing the raw (unadjusted) differences
+          between the full open CTR cohort (N = 22,435) and endoscopic CTR cohort (N = 4,947).
+        </p>
+        <div id="bar-unmatched"></div>
+      </div>
+    </div>
+
+    <footer>
+      Data source: Coombs et al. 2026, TriNetX database. Visualization built with D3.js.
+    </footer>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
