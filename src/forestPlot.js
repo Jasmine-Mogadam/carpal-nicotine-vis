@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import { showTooltip, moveTooltip, hideTooltip } from "./tooltip.js";
 
 export function createForestPlot(container, data, { title, width = 700, height = null }) {
   const margin = { top: 50, right: 40, bottom: 50, left: 160 };
@@ -90,6 +91,14 @@ export function createForestPlot(container, data, { title, width = 700, height =
     .attr("class", "favor-label")
     .text("Favors ECTR \u2192");
 
+  function forestTip(d) {
+    let html = `<strong>${d.complication}</strong>OR: ${d.or.toFixed(2)} (95% CI: ${d.ciLow.toFixed(2)}–${d.ciHigh.toFixed(2)})`;
+    html += d.significant
+      ? `<br><span style="color:#ff9999">★ Statistically significant</span>`
+      : `<br><span style="color:#aaa">Not significant</span>`;
+    return html;
+  }
+
   // CI lines
   g.selectAll(".ci-line")
     .data(data)
@@ -100,7 +109,11 @@ export function createForestPlot(container, data, { title, width = 700, height =
     .attr("y1", (d) => y(d.complication) + y.bandwidth() / 2)
     .attr("y2", (d) => y(d.complication) + y.bandwidth() / 2)
     .attr("stroke", (d) => (d.significant ? "var(--sig-color)" : "var(--nonsig-color)"))
-    .attr("stroke-width", 2);
+    .attr("stroke-width", 2)
+    .style("cursor", "pointer")
+    .on("mouseover", (event, d) => showTooltip(event, forestTip(d)))
+    .on("mousemove", moveTooltip)
+    .on("mouseout", hideTooltip);
 
   // OR point estimates
   g.selectAll(".or-point")
@@ -116,7 +129,11 @@ export function createForestPlot(container, data, { title, width = 700, height =
       const cx = x(d.or);
       const cy = y(d.complication) + y.bandwidth() / 2;
       return `rotate(45,${cx},${cy})`;
-    });
+    })
+    .style("cursor", "pointer")
+    .on("mouseover", (event, d) => showTooltip(event, forestTip(d)))
+    .on("mousemove", moveTooltip)
+    .on("mouseout", hideTooltip);
 
   // OR value labels on right side
   g.selectAll(".or-label")

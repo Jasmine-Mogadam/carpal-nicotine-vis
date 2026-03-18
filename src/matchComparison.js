@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import { showTooltip, moveTooltip, hideTooltip } from "./tooltip.js";
 
 export function createMatchComparisonChart(container, unmatched, matched, { title, width = 700, height = 420 }) {
   const margin = { top: 50, right: 30, bottom: 100, left: 160 };
@@ -97,13 +98,27 @@ export function createMatchComparisonChart(container, unmatched, matched, { titl
     .attr("stroke", "var(--unmatched-color)")
     .attr("stroke-width", 2);
 
+  function matchTip(d) {
+    let html = `<strong>${d.complication}</strong>`;
+    html += `Unmatched OR: ${d.unmatchedOR.toFixed(2)} (95% CI: ${d.unmatchedCILow.toFixed(2)}–${d.unmatchedCIHigh.toFixed(2)})<br>`;
+    html += `Matched OR: ${d.matchedOR.toFixed(2)} (95% CI: ${d.matchedCILow.toFixed(2)}–${d.matchedCIHigh.toFixed(2)})`;
+    html += d.significant
+      ? `<br><span style="color:#ff9999">★ Matched: statistically significant</span>`
+      : `<br><span style="color:#aaa">Matched: not significant</span>`;
+    return html;
+  }
+
   g.selectAll(".point-unmatched")
     .data(chartData)
     .join("circle")
     .attr("cx", (d) => x(d.unmatchedOR))
     .attr("cy", (d) => y(d.complication) + y.bandwidth() / 2 - offset)
     .attr("r", 5)
-    .attr("fill", "var(--unmatched-color)");
+    .attr("fill", "var(--unmatched-color)")
+    .style("cursor", "pointer")
+    .on("mouseover", (event, d) => showTooltip(event, matchTip(d)))
+    .on("mousemove", moveTooltip)
+    .on("mouseout", hideTooltip);
 
   // Matched CI lines + points
   g.selectAll(".ci-matched")
@@ -114,7 +129,11 @@ export function createMatchComparisonChart(container, unmatched, matched, { titl
     .attr("y1", (d) => y(d.complication) + y.bandwidth() / 2 + offset)
     .attr("y2", (d) => y(d.complication) + y.bandwidth() / 2 + offset)
     .attr("stroke", "var(--matched-color)")
-    .attr("stroke-width", 2);
+    .attr("stroke-width", 2)
+    .style("cursor", "pointer")
+    .on("mouseover", (event, d) => showTooltip(event, matchTip(d)))
+    .on("mousemove", moveTooltip)
+    .on("mouseout", hideTooltip);
 
   g.selectAll(".point-matched")
     .data(chartData)
@@ -122,7 +141,11 @@ export function createMatchComparisonChart(container, unmatched, matched, { titl
     .attr("cx", (d) => x(d.matchedOR))
     .attr("cy", (d) => y(d.complication) + y.bandwidth() / 2 + offset)
     .attr("r", 5)
-    .attr("fill", "var(--matched-color)");
+    .attr("fill", "var(--matched-color)")
+    .style("cursor", "pointer")
+    .on("mouseover", (event, d) => showTooltip(event, matchTip(d)))
+    .on("mousemove", moveTooltip)
+    .on("mouseout", hideTooltip);
 
   // Legend
   const legend = svg.append("g").attr("transform", `translate(${width - 240}, 38)`);

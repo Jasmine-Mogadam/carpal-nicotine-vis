@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import { showTooltip, moveTooltip, hideTooltip } from "./tooltip.js";
 
 export function createDemographicsChart(container, demographics, { title, width = 700, height = 360 }) {
   const margin = { top: 50, right: 30, bottom: 80, left: 60 };
@@ -22,10 +23,10 @@ export function createDemographicsChart(container, demographics, { title, width 
     .text(title);
 
   // Comorbidity data for matched cohorts
-  const matchedOctr = demographics.comorbidities.matched.octr;
-  const matchedEctr = demographics.comorbidities.matched.ectr;
-  const octrN = demographics.matched.octr.n;
-  const ectrN = demographics.matched.ectr.n;
+  const matchedOctr = demographics.matchedOCTR;
+  const matchedEctr = demographics.matchedECTR;
+  const octrN = demographics.matchedOCTR.n;
+  const ectrN = demographics.matchedECTR.n;
 
   const labels = {
     diabetes: "Diabetes",
@@ -39,6 +40,10 @@ export function createDemographicsChart(container, demographics, { title, width 
     label: labels[key],
     octrRate: (matchedOctr[key] / octrN) * 100,
     ectrRate: (matchedEctr[key] / ectrN) * 100,
+    octrCount: matchedOctr[key],
+    ectrCount: matchedEctr[key],
+    octrN,
+    ectrN,
   }));
 
   const x0 = d3
@@ -103,7 +108,12 @@ export function createDemographicsChart(container, demographics, { title, width 
     .attr("width", x1.bandwidth())
     .attr("height", (d) => innerH - y(d.octrRate))
     .attr("fill", "var(--octr-color)")
-    .attr("rx", 2);
+    .attr("rx", 2)
+    .style("cursor", "pointer")
+    .on("mouseover", (event, d) => showTooltip(event,
+      `<strong>${d.label}</strong>Open CTR (Matched): ${d.octrRate.toFixed(2)}% (${d.octrCount}/${d.octrN.toLocaleString()})<br>Endoscopic CTR (Matched): ${d.ectrRate.toFixed(2)}% (${d.ectrCount}/${d.ectrN.toLocaleString()})`))
+    .on("mousemove", moveTooltip)
+    .on("mouseout", hideTooltip);
 
   groups
     .append("rect")
@@ -112,7 +122,12 @@ export function createDemographicsChart(container, demographics, { title, width 
     .attr("width", x1.bandwidth())
     .attr("height", (d) => innerH - y(d.ectrRate))
     .attr("fill", "var(--ectr-color)")
-    .attr("rx", 2);
+    .attr("rx", 2)
+    .style("cursor", "pointer")
+    .on("mouseover", (event, d) => showTooltip(event,
+      `<strong>${d.label}</strong>Endoscopic CTR (Matched): ${d.ectrRate.toFixed(2)}% (${d.ectrCount}/${d.ectrN.toLocaleString()})<br>Open CTR (Matched): ${d.octrRate.toFixed(2)}% (${d.octrCount}/${d.octrN.toLocaleString()})`))
+    .on("mousemove", moveTooltip)
+    .on("mouseout", hideTooltip);
 
   groups
     .append("text")

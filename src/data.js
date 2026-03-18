@@ -27,33 +27,33 @@ export const matchedComplications = [
   { complication: "AKI", octr: 66, ectr: 67, octrN: 4581, ectrN: 4581, or: 1.0, ciLow: 0.7, ciHigh: 1.4, ard: -0.1, significant: false },
 ];
 
+// Table 1: one object per cohort, all demographic variables flat
 export const demographics = {
-  unmatched: {
-    octr: { n: 22435, meanAge: 51, sdAge: 12 },
-    ectr: { n: 4947, meanAge: 51, sdAge: 12 },
+  unmatchedOCTR: {
+    n: 22435, meanAge: 51, sdAge: 12,
+    // Sex
+    male: 8395, female: 12947, unknownSex: 1093,
+    // Race
+    white: 16674, blackAA: 2982, unknownRace: 1836, hispanicLatino: 1267, otherRace: 508, asian: 162, nativeHawaiian: 118, americanIndian: 155,
+    // Comorbidities
+    diabetes: 5122, obesity: 7286, heartDisease: 3559, hypertension: 10998, renalDisease: 2141,
   },
-  matched: {
-    octr: { n: 4947, meanAge: 51, sdAge: 12 },
-    ectr: { n: 4947, meanAge: 52, sdAge: 12 },
+  unmatchedECTR: {
+    n: 4947, meanAge: 51, sdAge: 12,
+    male: 1814, female: 2950, unknownSex: 183,
+    white: 3741, blackAA: 665, unknownRace: 315, hispanicLatino: 263, otherRace: 80, asian: 71, nativeHawaiian: 41, americanIndian: 34,
+    diabetes: 1127, obesity: 1636, heartDisease: 725, hypertension: 2383, renalDisease: 420,
   },
-  sex: {
-    unmatched: {
-      octr: { male: 8395, female: 12947, unknown: 1093 },
-      ectr: { male: 1814, female: 2950, unknown: 183 },
-    },
-    matched: {
-      octr: { male: 1804, female: 2941, unknown: 202 },
-      ectr: { male: 1814, female: 2950, unknown: 183 },
-    },
+  matchedOCTR: {
+    n: 4947, meanAge: 51, sdAge: 12,
+    male: 1804, female: 2941, unknownSex: 202,
+    white: 3804, blackAA: 601, unknownRace: 305, hispanicLatino: 226, otherRace: 84, asian: 84, nativeHawaiian: 37, americanIndian: 32,
+    diabetes: 995, obesity: 1484, heartDisease: 656, hypertension: 2251, renalDisease: 349,
   },
-  comorbidities: {
-    unmatched: {
-      octr: { diabetes: 5122, obesity: 7286, heartDisease: 3559, hypertension: 10998, renalDisease: 2141 },
-      ectr: { diabetes: 1127, obesity: 1636, heartDisease: 725, hypertension: 2383, renalDisease: 420 },
-    },
-    matched: {
-      octr: { diabetes: 995, obesity: 1484, heartDisease: 656, hypertension: 2251, renalDisease: 349 },
-      ectr: { diabetes: 1127, obesity: 1636, heartDisease: 725, hypertension: 2383, renalDisease: 420 },
-    },
+  matchedECTR: {
+    n: 4947, meanAge: 52, sdAge: 12,
+    male: 1814, female: 2950, unknownSex: 183,
+    white: 3741, blackAA: 665, unknownRace: 315, hispanicLatino: 263, otherRace: 80, asian: 71, nativeHawaiian: 41, americanIndian: 34,
+    diabetes: 1127, obesity: 1636, heartDisease: 725, hypertension: 2383, renalDisease: 420,
   },
 };

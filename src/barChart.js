@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import { showTooltip, moveTooltip, hideTooltip } from "./tooltip.js";
 
 export function createGroupedBarChart(container, data, { title, width = 700, height = 420 }) {
   const margin = { top: 50, right: 30, bottom: 100, left: 60 };
@@ -24,11 +25,22 @@ export function createGroupedBarChart(container, data, { title, width = 700, hei
 
   // Compute rates
   const chartData = data.map((d) => ({
-    complication: d.complication,
+    ...d,
     octrRate: (d.octr / d.octrN) * 100,
     ectrRate: (d.ectr / d.ectrN) * 100,
-    significant: d.significant,
   }));
+
+  function barTip(d, active) {
+    const octrLine = `Open CTR: ${d.octrRate.toFixed(2)}% (${d.octr}/${d.octrN.toLocaleString()})`;
+    const ectrLine = `Endoscopic CTR: ${d.ectrRate.toFixed(2)}% (${d.ectr}/${d.ectrN.toLocaleString()})`;
+    let html = `<strong>${d.complication}</strong>`;
+    html += active === "octr"
+      ? `<span style="text-decoration:underline">${octrLine}</span><br>${ectrLine}`
+      : `${octrLine}<br><span style="text-decoration:underline">${ectrLine}</span>`;
+    if (d.or != null) html += `<br>OR: ${d.or.toFixed(1)} (95% CI: ${d.ciLow.toFixed(1)}–${d.ciHigh.toFixed(1)})`;
+    if (d.significant) html += `<br><span style="color:#ff9999">★ Statistically significant</span>`;
+    return html;
+  }
 
   const x0 = d3
     .scaleBand()
@@ -94,7 +106,11 @@ export function createGroupedBarChart(container, data, { title, width = 700, hei
     .attr("width", x1.bandwidth())
     .attr("height", (d) => innerH - y(d.octrRate))
     .attr("fill", "var(--octr-color)")
-    .attr("rx", 2);
+    .attr("rx", 2)
+    .style("cursor", "pointer")
+    .on("mouseover", (event, d) => showTooltip(event, barTip(d, "octr")))
+    .on("mousemove", moveTooltip)
+    .on("mouseout", hideTooltip);
 
   // ECTR bars
   groups
@@ -104,7 +120,11 @@ export function createGroupedBarChart(container, data, { title, width = 700, hei
     .attr("width", x1.bandwidth())
     .attr("height", (d) => innerH - y(d.ectrRate))
     .attr("fill", "var(--ectr-color)")
-    .attr("rx", 2);
+    .attr("rx", 2)
+    .style("cursor", "pointer")
+    .on("mouseover", (event, d) => showTooltip(event, barTip(d, "ectr")))
+    .on("mousemove", moveTooltip)
+    .on("mouseout", hideTooltip);
 
   // Value labels on bars
   groups
@@ -136,18 +156,18 @@ export function createGroupedBarChart(container, data, { title, width = 700, hei
     .attr("fill", "var(--sig-color)")
     .text("*");
 
-  // Legend
-  const legend = svg.append("g").attr("transform", `translate(${width - 180}, 38)`);
+  // Legend (stacked vertically to avoid clipping)
+  const legend = svg.append("g").attr("transform", `translate(${width - 150}, 14)`);
 
   legend.append("rect").attr("width", 14).attr("height", 14).attr("fill", "var(--octr-color)").attr("rx", 2);
   legend.append("text").attr("x", 20).attr("y", 11).attr("class", "legend-text").text("Open CTR");
 
   legend
     .append("rect")
-    .attr("x", 90)
+    .attr("y", 20)
     .attr("width", 14)
     .attr("height", 14)
     .attr("fill", "var(--ectr-color)")
     .attr("rx", 2);
-  legend.append("text").attr("x", 110).attr("y", 11).attr("class", "legend-text").text("Endoscopic CTR");
+  legend.append("text").attr("x", 20).attr("y", 31).attr("class", "legend-text").text("Endoscopic CTR");
 }

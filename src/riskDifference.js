@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import { showTooltip, moveTooltip, hideTooltip } from "./tooltip.js";
 
 export function createRiskDifferenceChart(container, data, { title, width = 700, height = 420 }) {
   const margin = { top: 50, right: 80, bottom: 100, left: 160 };
@@ -77,7 +78,19 @@ export function createRiskDifferenceChart(container, data, { title, width = 700,
     .attr("height", y.bandwidth())
     .attr("fill", (d) => (d.significant ? "var(--sig-color)" : "var(--nonsig-color)"))
     .attr("opacity", 0.8)
-    .attr("rx", 3);
+    .attr("rx", 3)
+    .style("cursor", "pointer")
+    .on("mouseover", (event, d) => {
+      const nnt = d.ard === 0 ? "∞" : Math.round(100 / Math.abs(d.ard));
+      const dir = d.ard > 0 ? "higher with Open CTR" : d.ard < 0 ? "higher with Endoscopic CTR" : "no difference";
+      let html = `<strong>${d.complication}</strong>ARD: ${d.ard > 0 ? "+" : ""}${d.ard.toFixed(2)}% (${dir})<br>NNT: ${nnt}`;
+      html += d.significant
+        ? `<br><span style="color:#ff9999">★ Statistically significant</span>`
+        : `<br><span style="color:#aaa">Not significant</span>`;
+      showTooltip(event, html);
+    })
+    .on("mousemove", moveTooltip)
+    .on("mouseout", hideTooltip);
 
   // NNT labels on right
   g.selectAll(".nnt-label")
