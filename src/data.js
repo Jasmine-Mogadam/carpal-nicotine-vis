@@ -1,5 +1,9 @@
 // Data extracted from Coombs et al. 2026, Tables 1-3
 // "Improved Outcomes With Endoscopic Carpal Tunnel Release for Patients With Nicotine Dependence"
+//
+// Metacarpal comorbidity data extracted from:
+//   3.18.26 metacarpal repair outcomes raw data.xlsx
+//   Run `npm run extract` to regenerate.
 
 export const unmatchedComplications = [
   { complication: "Median nerve injury", octr: 123, ectr: 10, octrN: 22435, ectrN: 4947, or: 2.7, ciLow: 1.4, ciHigh: 5.2, significant: true },
@@ -57,3 +61,19 @@ export const demographics = {
     diabetes: 1127, obesity: 1636, heartDisease: 725, hypertension: 2383, renalDisease: 420,
   },
 };
+
+// ── Metacarpal Repair Surgery Outcomes by Comorbidity ──────────────────────
+// Source: 3.18.26 metacarpal repair outcomes raw data.xlsx (regenerate with `npm run extract`)
+// Each row = a comorbidity group; values are raw counts over 90-day post-op window.
+// Outcome key names match Excel headers (snake_case). "superfiical" typo is in source data.
+export const metacarpalComorbidities = [
+  { group: "Rheumatoid Arthritis",          n: 1064,  edVisit: 182,  superficialSSI: 0,   deepSSI: 0,  readmission: 112, additionalSurgery: 72,   analgesics: 485,  nerveInjury: 39,  painSite: 37  },
+  { group: "Depression / Anxiety",          n: 14659, edVisit: 2764, superficialSSI: 39,  deepSSI: 26, readmission: 1509, additionalSurgery: 1297, analgesics: 6418, nerveInjury: 608, painSite: 571 },
+  { group: "Ischemic Heart Disease",        n: 3787,  edVisit: 824,  superficialSSI: 11,  deepSSI: 0,  readmission: 675, additionalSurgery: 229,  analgesics: 1896, nerveInjury: 239, painSite: 115 },
+  { group: "Kidney Disease",               n: 3584,  edVisit: 849,  superficialSSI: 15,  deepSSI: 17, readmission: 923, additionalSurgery: 238,  analgesics: 2033, nerveInjury: 206, painSite: 135 },
+  { group: "Hypertension",                 n: 16370, edVisit: 2570, superficialSSI: 51,  deepSSI: 31, readmission: 2161, additionalSurgery: 1172, analgesics: 7481, nerveInjury: 1100, painSite: 573 },
+  { group: "Smoking / Nicotine Dependence",n: 15158, edVisit: 2820, superficialSSI: 42,  deepSSI: 21, readmission: 1498, additionalSurgery: 1527, analgesics: 6999, nerveInjury: 1170, painSite: 590 },
+  { group: "Obesity",                      n: 24888, edVisit: 2928, superficialSSI: 63,  deepSSI: 26, readmission: 1748, additionalSurgery: 1949, analgesics: 9367, nerveInjury: 1336, painSite: 795 },
+  { group: "Diabetes",                     n: 6878,  edVisit: 1190, superficialSSI: 23,  deepSSI: 14, readmission: 856, additionalSurgery: 436,  analgesics: 3103, nerveInjury: 407,  painSite: 209 },
+  { group: "Age 65+",                      n: 20423, edVisit: 2219, superficialSSI: 30,  deepSSI: 23, readmission: 1853, additionalSurgery: 1055, analgesics: 7128, nerveInjury: 1197, painSite: 395 },
+];

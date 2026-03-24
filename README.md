@@ -17,10 +17,11 @@ The original PDF of the paper is included in the repository root:
 
 All extracted and cleaned data lives in a single JavaScript module:
 
-- **[`src/data.js`](src/data.js)** — Contains three exported objects:
+- **[`src/data.js`](src/data.js)** — Contains four exported objects:
   - `unmatchedComplications` — Table 2 from the paper: 90-day complication counts, rates, and odds ratios for the full unmatched cohorts (OCTR N=22,435 vs ECTR N=4,947)
   - `matchedComplications` — Table 3 from the paper: same outcomes after propensity score matching (N=4,581 per group), including absolute risk differences
   - `demographics` — Table 1 from the paper: age, sex, race, and comorbidity distributions for both unmatched and matched cohorts
+  - `metacarpalComorbidities` — Metacarpal repair surgery 90-day outcomes (counts) stratified by comorbidity group, from the Excel file (regenerate with `npm run extract`)
 
 Note: per the paper's de-identification protocol, outcome counts below 10 were rounded up to 10 by the authors.
 
@@ -36,6 +37,8 @@ The dashboard renders six D3.js charts:
 | Absolute Risk Difference + NNT | [`src/riskDifference.js`](src/riskDifference.js) | Horizontal bars showing absolute risk differences with Number Needed to Treat (NNT) annotations — an additional analysis not in the original paper. |
 | Comorbidity Prevalence | [`src/demographicsChart.js`](src/demographicsChart.js) | Matched cohort comorbidity profiles (diabetes, obesity, heart disease, hypertension, renal disease). |
 | Unmatched Complication Rates | [`src/barChart.js`](src/barChart.js) | Raw complication rates before matching (full cohorts). |
+| Metacarpal Outcome Heatmap | [`src/metacarpalChart.js`](src/metacarpalChart.js) | Heatmap of post-op outcome rates (%) for metacarpal repair surgery, rows = comorbidity groups, columns = outcomes. Color intensity = rate. |
+| Metacarpal Outcomes by Group | [`src/metacarpalChart.js`](src/metacarpalChart.js) | Grouped bar chart of key clinical outcomes (ED visit, readmission, additional surgery, nerve injury, pain) by comorbidity group. |
 
 ## Statistical Methods Reproduced
 
@@ -65,6 +68,20 @@ A plug-and-play builder lets you choose:
 | **Axes / Metrics** | Dropdowns populated dynamically based on chart type and selected data source |
 
 Available numeric fields vary by source (rates, OR, CI bounds, ARD, NNT, counts). A stats summary table (min/max/mean) appears below the controls after rendering. Source: [`src/customAnalysis.js`](src/customAnalysis.js).
+
+## Data Extraction
+
+The metacarpal repair outcomes data lives in `3.18.26 metacarpal repair outcomes raw data.xlsx` in the repo root. To regenerate `src/data.js` from the Excel file, run:
+
+```bash
+npm run extract
+```
+
+This installs `openpyxl` (if needed) and runs `scripts/extract_data.py`, which:
+- Prints all sheet data and computed outcome rates to stdout
+- Outputs a ready-to-paste JavaScript block at the end
+
+Copy the generated `export const metacarpalComorbidities = [...]` block into `src/data.js` to update the values. Python dependencies are listed in `requirements.txt`.
 
 ## Running Locally
 

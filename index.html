@@ -83,6 +83,16 @@
                 >Complication Rates (Unmatched)</a
               >
             </li>
+            <li>
+              <a href="#sec-metacarpal-heatmap" class="toc-link"
+                >Metacarpal: Outcome Heatmap</a
+              >
+            </li>
+            <li>
+              <a href="#sec-metacarpal-outcomes" class="toc-link"
+                >Metacarpal: Outcomes by Group</a
+              >
+            </li>
           </ul>
         </aside>
 
@@ -222,6 +232,26 @@
             </p>
             <div id="bar-unmatched"></div>
           </section>
+
+          <section id="sec-metacarpal-heatmap" class="card">
+            <p class="card-description">
+              Heatmap of 90-day post-operative outcome rates (%) for metacarpal
+              repair surgery, stratified by pre-operative comorbidity group.
+              Darker cells indicate higher rates. Data source: raw TriNetX query
+              (metacarpal repair outcomes Excel file).
+            </p>
+            <div id="metacarpal-heatmap"></div>
+          </section>
+
+          <section id="sec-metacarpal-outcomes" class="card">
+            <p class="card-description">
+              Key clinical outcome rates for metacarpal repair by comorbidity
+              group: ED visits, readmission, additional surgery, nerve/vessel
+              injury, and pain at surgical site. Kidney disease and ischemic
+              heart disease groups show notably higher readmission rates.
+            </p>
+            <div id="metacarpal-outcomes"></div>
+          </section>
         </div>
       </div>
     </div>
@@ -260,6 +290,7 @@
               </option>
               <option value="sex">Sex Distribution (Table 1)</option>
               <option value="race">Race Distribution (Table 1, Matched)</option>
+              <option value="metacarpal">Metacarpal Repair by Comorbidity (Excel)</option>
             </select>
           </div>
 

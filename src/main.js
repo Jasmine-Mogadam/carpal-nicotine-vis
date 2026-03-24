@@ -1,10 +1,11 @@
-import { unmatchedComplications, matchedComplications, demographics } from "./data.js";
+import { unmatchedComplications, matchedComplications, demographics, metacarpalComorbidities } from "./data.js";
 import { createForestPlot } from "./forestPlot.js";
 import { createGroupedBarChart } from "./barChart.js";
 import { createRiskDifferenceChart } from "./riskDifference.js";
 import { createDemographicsChart } from "./demographicsChart.js";
 import { createMatchComparisonChart } from "./matchComparison.js";
 import { createSexDistributionChart, createRaceDistributionChart, createPatientProfileChart } from "./demographicsExpanded.js";
+import { createMetacarpalHeatmap, createMetacarpalOutcomesChart } from "./metacarpalChart.js";
 import { initCustomAnalysis } from "./customAnalysis.js";
 import { initRawData } from "./rawData.js";
 import { addExportButton } from "./exportPng.js";
@@ -69,6 +70,18 @@ createGroupedBarChart(barUnmatchedEl, unmatchedComplications, {
 });
 addExportButton(barUnmatchedEl, "complication-rates-unmatched.png");
 
+const metacarpalHeatmapEl = document.getElementById("metacarpal-heatmap");
+createMetacarpalHeatmap(metacarpalHeatmapEl, metacarpalComorbidities, {
+  title: "Metacarpal Repair: Post-Op Outcome Rates by Comorbidity Group (%)",
+});
+addExportButton(metacarpalHeatmapEl, "metacarpal-heatmap.png");
+
+const metacarpalOutcomesEl = document.getElementById("metacarpal-outcomes");
+createMetacarpalOutcomesChart(metacarpalOutcomesEl, metacarpalComorbidities, {
+  title: "Metacarpal Repair: Key Clinical Outcome Rates by Comorbidity Group",
+});
+addExportButton(metacarpalOutcomesEl, "metacarpal-outcomes.png");
+
 // ── Tab switching ─────────────────────────────────────────────────────────────
 
 document.querySelectorAll(".tab-btn").forEach((btn) => {
@@ -84,7 +97,7 @@ document.querySelectorAll(".tab-btn").forEach((btn) => {
 // ── TOC scroll-spy ────────────────────────────────────────────────────────────
 
 const tocLinks = document.querySelectorAll(".toc-link");
-const sections = [...document.querySelectorAll("#tab-dashboard section, #sec-summary, #sec-sex-dist, #sec-race-dist, #sec-patient-profile")];
+const sections = [...document.querySelectorAll("#tab-dashboard section, #sec-summary, #sec-sex-dist, #sec-race-dist, #sec-patient-profile, #sec-metacarpal-heatmap, #sec-metacarpal-outcomes")];
 
 const observer = new IntersectionObserver(
   (entries) => {

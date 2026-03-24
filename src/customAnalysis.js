@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { unmatchedComplications, matchedComplications, demographics } from "./data.js";
+import { unmatchedComplications, matchedComplications, demographics, metacarpalComorbidities } from "./data.js";
 import { showTooltip, moveTooltip, hideTooltip } from "./tooltip.js";
 import { exportChartAsPng } from "./exportPng.js";
 
@@ -106,6 +106,33 @@ const SOURCES = {
       hispanic: { label: "Hispanic/Latino (%)", type: "numeric" },
       asian: { label: "Asian (%)", type: "numeric" },
       other: { label: "Other/Unknown (%)", type: "numeric" },
+    },
+  },
+  metacarpal: {
+    label: "Metacarpal Repair by Comorbidity (Excel)",
+    rows: metacarpalComorbidities.map((d) => ({
+      group: d.group,
+      n: d.n,
+      edVisitRate:    d.n > 0 ? (d.edVisit           / d.n) * 100 : 0,
+      superfSSIRate:  d.n > 0 ? (d.superficialSSI     / d.n) * 100 : 0,
+      deepSSIRate:    d.n > 0 ? (d.deepSSI             / d.n) * 100 : 0,
+      readmitRate:    d.n > 0 ? (d.readmission         / d.n) * 100 : 0,
+      addlSurgRate:   d.n > 0 ? (d.additionalSurgery   / d.n) * 100 : 0,
+      analgesicsRate: d.n > 0 ? (d.analgesics           / d.n) * 100 : 0,
+      nerveInjRate:   d.n > 0 ? (d.nerveInjury          / d.n) * 100 : 0,
+      painSiteRate:   d.n > 0 ? (d.painSite             / d.n) * 100 : 0,
+    })),
+    fields: {
+      group:          { label: "Comorbidity Group",       type: "categorical" },
+      n:              { label: "N (Total Patients)",       type: "numeric" },
+      edVisitRate:    { label: "ED Visit Rate (%)",        type: "numeric" },
+      superfSSIRate:  { label: "Superficial SSI Rate (%)", type: "numeric" },
+      deepSSIRate:    { label: "Deep SSI Rate (%)",        type: "numeric" },
+      readmitRate:    { label: "Readmission Rate (%)",     type: "numeric" },
+      addlSurgRate:   { label: "Additional Surgery Rate (%)", type: "numeric" },
+      analgesicsRate: { label: "Analgesics Rate (%)",      type: "numeric" },
+      nerveInjRate:   { label: "Nerve Injury Rate (%)",    type: "numeric" },
+      painSiteRate:   { label: "Pain at Site Rate (%)",    type: "numeric" },
     },
   },
 };
