@@ -6,6 +6,7 @@ import { createDemographicsChart } from "./demographicsChart.js";
 import { createMatchComparisonChart } from "./matchComparison.js";
 import { createSexDistributionChart, createRaceDistributionChart, createPatientProfileChart } from "./demographicsExpanded.js";
 import { createMetacarpalHeatmap, createMetacarpalOutcomesChart } from "./metacarpalChart.js";
+import { createMetacarpalForestVsNicotine, createMetacarpalPValueHeatmap, createMetacarpalARDChart, createOutcomeCorrelationMatrix, createPowerBubbleChart } from "./metacarpalAnalysis.js";
 import { initCustomAnalysis } from "./customAnalysis.js";
 import { initRawData } from "./rawData.js";
 import { addExportButton } from "./exportPng.js";
@@ -82,6 +83,36 @@ createMetacarpalOutcomesChart(metacarpalOutcomesEl, metacarpalComorbidities, {
 });
 addExportButton(metacarpalOutcomesEl, "metacarpal-outcomes.png");
 
+const metaForestNicotineEl = document.getElementById("meta-forest-nicotine");
+createMetacarpalForestVsNicotine(metaForestNicotineEl, metacarpalComorbidities, {
+  title: "Metacarpal Repair: Odds Ratios vs Smoking/Nicotine Reference",
+});
+addExportButton(metaForestNicotineEl, "meta-forest-vs-nicotine.png");
+
+const metaPValueEl = document.getElementById("meta-pvalue-heatmap");
+createMetacarpalPValueHeatmap(metaPValueEl, metacarpalComorbidities, {
+  title: "Metacarpal Repair: Chi-Square Significance vs Nicotine Reference",
+});
+addExportButton(metaPValueEl, "meta-pvalue-heatmap.png");
+
+const metaARDEl = document.getElementById("meta-ard-chart");
+createMetacarpalARDChart(metaARDEl, metacarpalComorbidities, {
+  title: "Metacarpal Repair: Absolute Risk Difference vs Nicotine Baseline",
+});
+addExportButton(metaARDEl, "meta-ard-chart.png");
+
+const metaCorrEl = document.getElementById("meta-corr-matrix");
+createOutcomeCorrelationMatrix(metaCorrEl, metacarpalComorbidities, {
+  title: "Outcome Correlation Matrix (Metacarpal Repair)",
+});
+addExportButton(metaCorrEl, "meta-outcome-correlations.png");
+
+const metaPowerEl = document.getElementById("meta-power-bubble");
+createPowerBubbleChart(metaPowerEl, metacarpalComorbidities, {
+  title: "Metacarpal Repair: Group Size vs Complication Burden",
+});
+addExportButton(metaPowerEl, "meta-power-bubble.png");
+
 // ── Tab switching ─────────────────────────────────────────────────────────────
 
 document.querySelectorAll(".tab-btn").forEach((btn) => {
@@ -97,7 +128,7 @@ document.querySelectorAll(".tab-btn").forEach((btn) => {
 // ── TOC scroll-spy ────────────────────────────────────────────────────────────
 
 const tocLinks = document.querySelectorAll(".toc-link");
-const sections = [...document.querySelectorAll("#tab-dashboard section, #sec-summary, #sec-sex-dist, #sec-race-dist, #sec-patient-profile, #sec-metacarpal-heatmap, #sec-metacarpal-outcomes")];
+const sections = [...document.querySelectorAll("#tab-dashboard section, #sec-summary, #sec-sex-dist, #sec-race-dist, #sec-patient-profile, #sec-metacarpal-heatmap, #sec-metacarpal-outcomes, #sec-meta-forest-nicotine, #sec-meta-pvalue, #sec-meta-ard, #sec-meta-corr, #sec-meta-power")];
 
 const observer = new IntersectionObserver(
   (entries) => {

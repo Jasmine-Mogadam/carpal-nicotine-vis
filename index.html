@@ -93,6 +93,11 @@
                 >Metacarpal: Outcomes by Group</a
               >
             </li>
+            <li><a href="#sec-meta-forest-nicotine" class="toc-link">Metacarpal: OR vs Nicotine (Forest)</a></li>
+            <li><a href="#sec-meta-pvalue" class="toc-link">Metacarpal: Significance Heatmap</a></li>
+            <li><a href="#sec-meta-ard" class="toc-link">Metacarpal: Risk Diff. vs Nicotine</a></li>
+            <li><a href="#sec-meta-corr" class="toc-link">Metacarpal: Outcome Correlations</a></li>
+            <li><a href="#sec-meta-power" class="toc-link">Metacarpal: Power &amp; Burden</a></li>
           </ul>
         </aside>
 
@@ -251,6 +256,63 @@
               heart disease groups show notably higher readmission rates.
             </p>
             <div id="metacarpal-outcomes"></div>
+          </section>
+
+          <section id="sec-meta-forest-nicotine" class="card">
+            <p class="card-description">
+              Odds ratios for 5 key outcomes comparing each comorbidity group to the
+              Smoking/Nicotine Dependence group as reference. Red = significantly different
+              (P &lt; .05); gray = not significant. Values &gt;1 mean the comorbidity group
+              has higher odds than nicotine patients. Reveals whether nicotine is truly a
+              high-risk baseline or whether other conditions (kidney disease, ischemic heart
+              disease) pose greater risk for specific outcomes.
+            </p>
+            <div id="meta-forest-nicotine"></div>
+          </section>
+
+          <section id="sec-meta-pvalue" class="card">
+            <p class="card-description">
+              Chi-square p-value matrix (each comorbidity group vs nicotine reference, all 8 outcomes).
+              Darker cells = lower p-value = stronger evidence of difference. Stars: * P&lt;.05,
+              ** P&lt;.01, *** P&lt;.001. Gray cells = zero-event counts (chi-square undefined).
+              Identifies which group–outcome combinations most diverge from nicotine patients and
+              highlights where zero counts limit statistical testing (a blind spot for future studies).
+            </p>
+            <div id="meta-pvalue-heatmap"></div>
+          </section>
+
+          <section id="sec-meta-ard" class="card">
+            <p class="card-description">
+              Absolute risk differences (percentage points) vs nicotine baseline. Unlike odds ratios,
+              ARDs are directly interpretable: a +10% ARD means 10 more patients per 100 experience
+              that complication compared to nicotine patients. Red = group has higher risk; blue =
+              nicotine has higher risk. Width of CI bars reflects group sample size. ⚠ Note that
+              zero-event cells produce artificially narrow CIs.
+            </p>
+            <div id="meta-ard-chart"></div>
+          </section>
+
+          <section id="sec-meta-corr" class="card">
+            <p class="card-description">
+              Pearson correlation matrix between outcome rates across all 9 comorbidity groups.
+              Red = strong negative correlation; blue = strong positive correlation. Highly correlated
+              outcomes (r &gt; 0.9) are statistically redundant — groups with high rates of one tend
+              to have high rates of the other. This reveals whether the study is measuring truly
+              independent endpoints or capturing the same underlying risk dimension multiple times.
+            </p>
+            <div id="meta-corr-matrix"></div>
+          </section>
+
+          <section id="sec-meta-power" class="card">
+            <p class="card-description">
+              Statistical power landscape: group size (n) vs composite complication burden. Bubble size
+              = readmission rate; color = number of outcomes significantly different from nicotine
+              (yellow→red = more). Groups in the lower-left quadrant (small n, lower burden) are
+              underpowered — hover to see the minimum detectable difference (MDD) for readmission.
+              This identifies which groups a future prospective study would need to oversample to
+              achieve 80% power.
+            </p>
+            <div id="meta-power-bubble"></div>
           </section>
         </div>
       </div>
